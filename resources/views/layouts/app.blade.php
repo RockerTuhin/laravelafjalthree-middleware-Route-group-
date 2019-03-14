@@ -24,10 +24,13 @@
         <link href="{{ asset('public/admin/css/helper.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('public/admin/css/style.css') }}" rel="stylesheet" type="text/css" />
         <script src="{{ asset('public/admin/js/modernizr.min.js') }}"></script>
+        <link href="{{ asset('public/admin/assets/datatables/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body class="fixed-left">
         
@@ -126,7 +129,10 @@
                                     <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="md md-chat"></i></a>
                                 </li>
                                 <li class="dropdown">
-                                    <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="{{ URL::to('public/admin/images/avatar-1.jpg') }}" alt="user-img" class="img-circle"> </a>
+                                    @php
+                                    $company_logo = DB::table('settings')->first();
+                                    @endphp
+                                    <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="{{ $company_logo->company_logo }}{{-- {{ URL::to('public/admin/images/avatar-1.jpg') }} --}}" alt="user-img" class="img-circle"> </a>
                                     <ul class="dropdown-menu">
                                         <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
                                         <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
@@ -179,124 +185,100 @@
                             <li>
                                 <a href="{{ route('home') }}" class="waves-effect active"><i class="md md-home"></i><span> Dashboard </span></a>
                             </li>
-
+                            <li>
+                                <a href="{{ route('pos') }}" class="waves-effect"><i class="md md-home"></i><span class="text-primary"> <b>POS</b> </span></a>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="fas fa-users"></i></i><span> Emloyees </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.employee') }}">Add Emloyee</a></li>
+                                    <li><a href="{{ route('all.employee') }}">All Emloyees</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Customers </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.customer') }}">Add Customer</a></li>
+                                    <li><a href="{{ route('all.customer') }}">All Customer</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Suppliers </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.supplier') }}">Add Supplier</a></li>
+                                    <li><a href="{{ route('all.supplier') }}">All Supplier</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span>Salary (Employee) </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.advanced.salary') }}">Add Advanced Salary</a></li>
+                                    <li><a href="{{ route('all.advanced.salary') }}">All Advanced Salary</a></li>
+                                    <li><a href="{{ route('pay.salary') }}">Pay Salary</a></li>
+                                    <li><a href="">Last Month Salary</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Category </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.category') }}">Add Category</a></li>
+                                    <li><a href="{{ route('all.category') }}">All Category</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Products </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.product') }}">Add Product</a></li>
+                                    <li><a href="{{ route('all.product') }}">All Product</a></li>
+                                    <li><a href="{{ route('import.product') }}">Import Product</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Expense </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('add.expense') }}">Add New</a></li>
+                                    <li><a href="{{ route('today.expense') }}">Today's Expense</a></li>
+                                    <li><a href="{{ route('monthly.expense') }}">This Months's Expense</a></li>
+                                    <li><a href="{{ route('yearly.expense') }}">This Years's Expense</a></li>
+                                    <li><a href="{{ route('previousYear.expense') }}">Previous Years's Expense</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Orders </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('pending.orders') }}">Pending Orders</a></li>
+                                    <li><a href="{{ route('succeed.orders') }}">Succeed Orders</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Sales Report </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="">First</a></li>
+                                    <li><a href="">Second</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Attendence </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('take.attendence') }}">Take Attendence</a></li>
+                                    <li><a href="{{ route('all.attendence') }}">All Attendence</a></li>
+                                    <li><a href="{{ route('monthly.attendence') }}">Monthly Attendence</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Setting </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('setting') }}">Setting</a></li>
+                                </ul>
+                            </li>
                             <li class="has_sub">
                                 <a href="#" class="waves-effect"><i class="md md-mail"></i><span> Mail </span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{ route('inbox') }}">Inbox</a></li>
-                                    <li><a href="email-compose.html">Compose Mail</a></li>
-                                    <li><a href="email-read.html">View Mail</a></li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('calendar') }}" class="waves-effect"><i class="md md-event"></i><span> Calendar </span></a>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-palette"></i> <span> Elements </span> <span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('calendar') }}">Calendar</a></li>
                                     <li><a href="{{ route('typography') }}">Typography</a></li>
-                                    <li><a href="buttons.html">Buttons</a></li>
-                                    <li><a href="panels.html">Panels</a></li>
-                                    <li><a href="checkbox-radio.html">Checkboxs-Radios</a></li>
-                                    <li><a href="tabs-accordions.html">Tabs &amp; Accordions</a></li>
-                                    <li><a href="modals.html">Modals</a></li>
-                                    <li><a href="bootstrap-ui.html">BS Elements</a></li>
-                                    <li><a href="progressbars.html">Progress Bars</a></li>
-                                    <li><a href="notification.html">Notification</a></li>
-                                    <li><a href="sweet-alert.html">Sweet-Alert</a></li>
                                 </ul>
                             </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-invert-colors-on"></i><span> Components </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="grid.html">Grid</a></li>
-                                    <li><a href="portlets.html">Portlets</a></li>
-                                    <li><a href="widgets.html">Widgets</a></li>
-                                    <li><a href="nestable-list.html">Nesteble</a></li>
-                                    <li><a href="ui-sliders.html">Sliders </a></li>
-                                    <li><a href="gallery.html">Gallery </a></li>
-                                    <li><a href="pricing.html">Pricing Table </a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-redeem"></i> <span> Icons </span> <span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="material-icon.html">Material Design</a></li>
-                                    <li><a href="ion-icons.html">Ion Icons</a></li>
-                                    <li><a href="font-awesome.html">Font awesome</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-now-widgets"></i><span> Forms </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="form-elements.html">General Elements</a></li>
-                                    <li><a href="form-validation.html">Form Validation</a></li>
-                                    <li><a href="form-advanced.html">Advanced Form</a></li>
-                                    <li><a href="form-wizard.html">Form Wizard</a></li>
-                                    <li><a href="form-editor.html">WYSIWYG Editor</a></li>
-                                    <li><a href="code-editor.html">Code Editors</a></li>
-                                    <li><a href="form-uploads.html">Multiple File Upload</a></li>
-                                    <li><a href="form-xeditable.html">X-editable</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-view-list"></i><span> Data Tables </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="tables.html">Basic Tables</a></li>
-                                    <li><a href="table-datatable.html">Data Table</a></li>
-                                    <li><a href="tables-editable.html">Editable Table</a></li>
-                                    <li><a href="responsive-table.html">Responsive Table</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-poll"></i><span> Charts </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="morris-chart.html">Morris Chart</a></li>
-                                    <li><a href="chartjs.html">Chartjs</a></li>
-                                    <li><a href="flot-chart.html">Flot Chart</a></li>
-                                    <li><a href="peity-chart.html">Peity Charts</a></li>
-                                    <li><a href="charts-sparkline.html">Sparkline Charts</a></li>
-                                    <li><a href="chart-radial.html">Radial charts</a></li>
-                                    <li><a href="other-chart.html">Other Chart</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-place"></i><span> Maps </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="gmap.html"> Google Map</a></li>
-                                    <li><a href="vector-map.html"> Vector Map</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="has_sub">
-                                <a href="#" class="waves-effect"><i class="md md-pages"></i><span> Pages </span><span class="pull-right"><i class="md md-add"></i></span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="profile.html">Profile</a></li>
-                                    <li><a href="timeline.html">Timeline</a></li>
-                                    <li><a href="invoice.html">Invoice</a></li>
-                                    <li><a href="email-template.html">Email template</a></li>
-                                    <li><a href="contact.html">Contact-list</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="recoverpw.html">Recover Password</a></li>
-                                    <li><a href="lock-screen.html">Lock Screen</a></li>
-                                    <li><a href="blank.html">Blank Page</a></li>
-                                    <li><a href="maintenance.html">Maintenance</a></li>
-                                    <li><a href="coming-soon.html">Coming-soon</a></li>
-                                    <li><a href="404.html">404 Error</a></li>
-                                    <li><a href="404_alt.html">404 alt</a></li>
-                                    <li><a href="500.html">500 Error</a></li>
-                                </ul>
-                            </li>
-
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="md md-share"></i><span>Multi Level </span><span class="pull-right"><i class="md md-add"></i></span></a>
                                 <ul>
@@ -384,7 +366,17 @@
 
         <!-- Todo -->
         <script src="{{ asset('public/admin/js/jquery.todo.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+        <script src="{{asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+        <script src="{{ asset('public/admin/assets/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('public/admin/assets/datatables/dataTables.bootstrap.js') }}"></script>
 
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#datatable').dataTable();
+            } );
+        </script>
         <script type="text/javascript">
             /* ==============================================
             Counter Up
@@ -393,6 +385,45 @@
                 $('.counter').counterUp({
                     delay: 100,
                     time: 1200
+                });
+            });
+        </script>
+        <script>
+          @if(Session::has('messege'))
+          var type="{{Session::get('alert-type','info')}}"
+          switch(type){
+            case 'info':
+            toastr.info("{{ Session::get('messege') }}");
+            break;
+            case 'success':
+            toastr.success("{{ Session::get('messege') }}");
+            break;
+            case 'warning':
+            toastr.warning("{{ Session::get('messege') }}");
+            break;
+            case 'error':
+            toastr.error("{{ Session::get('messege') }}");
+            break;
+            }
+            @endif
+        </script>
+        <script>  
+         $(document).on("click", "#delete", function(e){
+             e.preventDefault();
+             var link = $(this).attr("href");
+                swal({
+                  title: "Are you Want to delete?",
+                  text: "Once Delete, This will be Permanently Delete!",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                       window.location.href = link;
+                  } else {
+                    swal("Safe Data!");
+                  }
                 });
             });
         </script>
